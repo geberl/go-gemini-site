@@ -41,6 +41,7 @@ func main() {
 	{
 		mux := &gemini.Mux{}
 		mux.HandleFunc("/", frontHandler(baseUrl, logger))
+		mux.HandleFunc("/about", aboutHandler(baseUrl, logger))
 		mux.HandleFunc("/item/", itemHandler(baseUrl, logger))
 
 		server := &gemini.Server{

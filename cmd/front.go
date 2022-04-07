@@ -35,6 +35,12 @@ func frontHandler(baseUrl string, logger log.Logger) func(context.Context, gemin
 			text = append(text, gemini.LineText(fmt.Sprintf("%d score | %d comments\n", story.Score, len(story.Kids))))
 		}
 
+		text = append(text, gemini.LineHeading2("Navigation"))
+		text = append(text, gemini.LineLink{
+			URL:  fmt.Sprintf("gemini://%s/about", baseUrl),
+			Name: "About",
+		})
+
 		w.Write([]byte(text.String()))
 	}
 }
