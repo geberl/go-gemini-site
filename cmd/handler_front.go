@@ -16,10 +16,14 @@ func frontHandler(baseUrl string, logger log.Logger) func(context.Context, gemin
 		ids, err := client.GetTopStories(25)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to get top items", "err", err)
+			w.WriteHeader(gemini.StatusNotFound, "Not found")
+			return
 		}
 		stories, err := client.GetItems(ids)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to get items", "err", err)
+			w.WriteHeader(gemini.StatusNotFound, "Not found")
+			return
 		}
 		sortByTime(stories)
 

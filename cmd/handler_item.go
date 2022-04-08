@@ -18,17 +18,23 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		cleanId, err := strconv.Atoi(id)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to convert item id to integer", "err", err)
+			w.WriteHeader(gemini.StatusBadRequest, "Bad request")
+			return
 		}
 
 		client := hkn.NewClient()
 		item, err := client.GetItem(cleanId)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to get item", "err", err)
+			w.WriteHeader(gemini.StatusNotFound, "Not found")
+			return
 		}
 
 		firstLevelComments, err := client.GetItems(item.Kids)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to get items", "err", err)
+			w.WriteHeader(gemini.StatusNotFound, "Not found")
+			return
 		}
 		sortByTime(firstLevelComments)
 

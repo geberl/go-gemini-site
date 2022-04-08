@@ -19,11 +19,15 @@ func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		user, err := client.GetUser(username)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to get user", "err", err)
+			w.WriteHeader(gemini.StatusNotFound, "Not found")
+			return
 		}
 
 		submittedItems, err := client.GetItems(user.Submitted)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to get items", "err", err)
+			w.WriteHeader(gemini.StatusNotFound, "Not found")
+			return
 		}
 		sortByTime(submittedItems)
 
