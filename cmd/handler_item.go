@@ -43,8 +43,8 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		text = append(text, gemini.LineHeading2("Links\n"))
 		if item.URL != "" {
 			text = append(text, gemini.LineLink{URL: item.URL})
+			text = append(text, gemini.LineText(""))
 		}
-		text = append(text, gemini.LineText(""))
 		text = append(text, gemini.LineLink{URL: fmt.Sprintf("https://news.ycombinator.com/item?id=%d", item.ID)})
 		text = append(text, gemini.LineText(""))
 
@@ -52,6 +52,7 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		text = append(text, gemini.LineText(fmt.Sprintf("By: %s", item.By)))
 		text = append(text, gemini.LineText(fmt.Sprintf("Comments: %d", item.Descendants)))
 		text = append(text, gemini.LineText(fmt.Sprintf("Score: %d", item.Score)))
+		text = append(text, gemini.LineText(fmt.Sprintf("Type: %s", item.Type)))
 		text = append(text, gemini.LineText(fmt.Sprintf("Time: %s", timestamp(int(item.Time)))))
 		text = append(text, gemini.LineText(""))
 
@@ -61,6 +62,7 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 			for _, line := range storyLines {
 				text = append(text, gemini.LineQuote(line))
 			}
+			text = append(text, gemini.LineText(""))
 		}
 
 		text = append(text, gemini.LineHeading2("Comments\n"))
