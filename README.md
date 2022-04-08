@@ -39,6 +39,7 @@ docker run --detach \
            --env "TZ=Europe/Berlin" \
            --env "HN_BASE_URL=eberl.se" \
            --env "HN_LOG_LEVEL=error" \
+           --mount type=volume,source=go-gemini-hn-certs,destination=/app/certs \
            --publish 1965:1965 \
            --name go-gemini-hn \
            --restart unless-stopped \
