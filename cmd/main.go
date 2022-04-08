@@ -43,6 +43,7 @@ func main() {
 		mux.HandleFunc("/", frontHandler(baseUrl, logger))
 		mux.HandleFunc("/about", aboutHandler(baseUrl, logger))
 		mux.HandleFunc("/item/", itemHandler(baseUrl, logger))
+		mux.HandleFunc("/user/", userHandler(baseUrl, logger))
 
 		server := &gemini.Server{
 			Handler:        loggingMiddleware(mux, logger),

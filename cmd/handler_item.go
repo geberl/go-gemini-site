@@ -37,7 +37,7 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		if item.Type == "story" {
 			text = append(text, gemini.LineHeading1(fmt.Sprintf("%s\n", item.Title)))
 		} else {
-			text = append(text, gemini.LineHeading1(fmt.Sprintf("%s %d\n", strings.Title(item.Type), item.ID)))
+			text = append(text, gemini.LineHeading1(fmt.Sprintf("%s\n", strings.Title(item.Type))))
 		}
 
 		text = append(text, gemini.LineHeading2("Links\n"))
@@ -49,11 +49,15 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		text = append(text, gemini.LineText(""))
 
 		text = append(text, gemini.LineHeading2("Metadata\n"))
-		text = append(text, gemini.LineText(fmt.Sprintf("By: %s", item.By)))
+		text = append(text, gemini.LineLink{
+			URL:  fmt.Sprintf("gemini://%s/user/%s", baseUrl, item.By),
+			Name: fmt.Sprintf("By: %s", item.By),
+		})
+		text = append(text, gemini.LineText(fmt.Sprintf("Id: %d", item.ID)))
 		text = append(text, gemini.LineText(fmt.Sprintf("Comments: %d", item.Descendants)))
 		text = append(text, gemini.LineText(fmt.Sprintf("Score: %d", item.Score)))
-		text = append(text, gemini.LineText(fmt.Sprintf("Type: %s", item.Type)))
-		text = append(text, gemini.LineText(fmt.Sprintf("Time: %s", timestamp(int(item.Time)))))
+		text = append(text, gemini.LineText(fmt.Sprintf("Type: %s", strings.Title(item.Type))))
+		text = append(text, gemini.LineText(fmt.Sprintf("Created: %s", timestamp(int(item.Time)))))
 		text = append(text, gemini.LineText(""))
 
 		if len(item.Text) > 0 {
@@ -69,18 +73,23 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		for _, firstLevelComment := range firstLevelComments {
 			commentLines := plaintext(firstLevelComment.Text, logger)
 			if commentLines[0] != "n/a" {
-				text = append(text, gemini.LineHeading3(fmt.Sprintf("%s by %s\n", timestamp(int(firstLevelComment.Time)), firstLevelComment.By)))
+				text = append(text, gemini.LineHeading3(fmt.Sprintf("%s\n", timestamp(int(firstLevelComment.Time)))))
 
-				for _, line := range commentLines {
-					text = append(text, gemini.LineQuote(line))
-				}
+				text = append(text, gemini.LineLink{
+					URL:  fmt.Sprintf("gemini://%s/user/%s", baseUrl, firstLevelComment.By),
+					Name: fmt.Sprintf("By: %s", item.By),
+				})
 
 				if len(firstLevelComment.Kids) > 0 {
-					text = append(text, gemini.LineText(""))
 					text = append(text, gemini.LineLink{
 						URL:  fmt.Sprintf("gemini://%s/item/%d", baseUrl, firstLevelComment.ID),
-						Name: fmt.Sprintf("%d Responses", len(firstLevelComment.Kids)),
+						Name: fmt.Sprintf("Responses: %d", len(firstLevelComment.Kids)),
 					})
+				}
+
+				text = append(text, gemini.LineText(""))
+				for _, line := range commentLines {
+					text = append(text, gemini.LineQuote(line))
 				}
 			}
 			text = append(text, gemini.LineText(""))
