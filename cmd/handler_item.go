@@ -44,6 +44,7 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		if item.URL != "" {
 			text = append(text, gemini.LineLink{URL: item.URL})
 		}
+		text = append(text, gemini.LineText(""))
 		text = append(text, gemini.LineLink{URL: fmt.Sprintf("https://news.ycombinator.com/item?id=%d", item.ID)})
 		text = append(text, gemini.LineText(""))
 
