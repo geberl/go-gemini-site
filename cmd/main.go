@@ -45,7 +45,7 @@ func main() {
 		mux.HandleFunc("/item/", itemHandler(baseUrl, logger))
 
 		server := &gemini.Server{
-			Handler:        gemini.LoggingMiddleware(mux),
+			Handler:        loggingMiddleware(mux, logger),
 			ReadTimeout:    30 * time.Second,
 			WriteTimeout:   1 * time.Minute,
 			GetCertificate: certificates.Get,
@@ -64,15 +64,15 @@ func main() {
 	{
 		execute, interrupt := run.SignalHandler(ctx, syscall.SIGTERM, syscall.SIGINT)
 		g.Add(func() error {
-			level.Debug(logger).Log("msg", "signal func g add")
+			level.Debug(logger).Log("msg", "signal listener starting")
 			err := execute()
 			if se, ok := err.(run.SignalError); ok {
-				level.Info(logger).Log("signal", se.Signal)
+				level.Info(logger).Log("msg", "signal received", "signal", se.Signal)
 				return nil
 			}
 			return err
 		}, func(err error) {
-			level.Debug(logger).Log("msg", "signal func g interrupt")
+			level.Debug(logger).Log("msg", "signal listener closing")
 			interrupt(err)
 		})
 	}
@@ -83,26 +83,4 @@ func main() {
 	}
 
 	level.Info(logger).Log("msg", "app exiting")
-
-	// c := make(chan os.Signal, 1)
-	// signal.Notify(c, os.Interrupt)
-
-	// errch := make(chan error)
-	// go func() {
-	// 	ctx := context.Background()
-	// 	errch <- server.ListenAndServe(ctx)
-	// }()
-
-	// select {
-	// case err := <-errch:
-	// 	log.Fatal(err)
-	// case <-c:
-	// 	log.Println("Shutting down...")
-	// 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	// 	defer cancel()
-	// 	err := server.Shutdown(ctx)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// }
 }

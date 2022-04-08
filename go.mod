@@ -6,6 +6,7 @@ require (
 	git.sr.ht/~adnano/go-gemini v0.2.2
 	github.com/go-kit/kit v0.12.0
 	github.com/go-kit/log v0.2.0
+	github.com/google/uuid v1.3.0
 	github.com/lukakerr/hkn v0.0.0-20190218004349-b4aa957c3360
 	github.com/mattn/go-isatty v0.0.14
 	github.com/oklog/run v1.1.0

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"sort"
 	"strings"
 	"time"
@@ -9,34 +8,8 @@ import (
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 	"github.com/lukakerr/hkn"
-	"github.com/mattn/go-isatty"
 	"jaytaylor.com/html2text"
 )
-
-func makeLogger(logLevel string) log.Logger {
-	var logger log.Logger
-
-	w := log.NewSyncWriter(os.Stdout)
-	if isatty.IsTerminal(os.Stdout.Fd()) {
-		logger = log.NewLogfmtLogger(w)
-	} else {
-		logger = log.NewJSONLogger(w)
-	}
-
-	switch logLevel {
-	case "error":
-		logger = level.NewFilter(logger, level.AllowError())
-	case "warn":
-		logger = level.NewFilter(logger, level.AllowWarn())
-	case "debug":
-		logger = level.NewFilter(logger, level.AllowDebug())
-	default:
-		logger = level.NewFilter(logger, level.AllowInfo())
-	}
-
-	logger = log.With(logger, "ts", log.DefaultTimestampUTC)
-	return logger
-}
 
 func plaintext(html string, logger log.Logger) []string {
 	var lines []string
