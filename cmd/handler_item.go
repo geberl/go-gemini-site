@@ -95,7 +95,7 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 			text = append(text, gemini.LineText(""))
 		}
 
-		text = append(text, gemini.LineHeading2("Navigation\n"))
+		text = append(text, gemini.LineHeading1("Navigation\n"))
 		if item.Parent > 0 {
 			text = append(text, gemini.LineLink{
 				URL:  fmt.Sprintf("gemini://%s/item/%d", baseUrl, item.Parent),
@@ -105,6 +105,10 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		text = append(text, gemini.LineLink{
 			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
 			Name: "Home",
+		})
+		text = append(text, gemini.LineLink{
+			URL:  fmt.Sprintf("gemini://%s/about", baseUrl),
+			Name: "About",
 		})
 
 		w.Write([]byte(text.String()))

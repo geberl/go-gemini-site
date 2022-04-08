@@ -33,6 +33,7 @@ func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 
 		text = append(text, gemini.LineHeading2("Links\n"))
 		text = append(text, gemini.LineLink{URL: fmt.Sprintf("https://news.ycombinator.com/user?id=%s", user.ID)})
+		text = append(text, gemini.LineText(""))
 
 		text = append(text, gemini.LineHeading2("Metadata\n"))
 		text = append(text, gemini.LineText(fmt.Sprintf("Name: %s", user.ID)))
@@ -48,10 +49,10 @@ func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 			for _, line := range aboutLines {
 				text = append(text, gemini.LineQuote(line))
 			}
-			text = append(text, gemini.LineText(""))
 		} else {
 			text = append(text, gemini.LineQuote("n/a"))
 		}
+		text = append(text, gemini.LineText(""))
 
 		text = append(text, gemini.LineHeading2("Submitted\n"))
 
@@ -87,11 +88,16 @@ func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 			}
 		}
 
-		text = append(text, gemini.LineHeading2("Navigation\n"))
+		text = append(text, gemini.LineHeading1("Navigation\n"))
 		text = append(text, gemini.LineLink{
 			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
 			Name: "Home",
 		})
+		text = append(text, gemini.LineLink{
+			URL:  fmt.Sprintf("gemini://%s/about", baseUrl),
+			Name: "About",
+		})
+
 		w.Write([]byte(text.String()))
 	}
 }

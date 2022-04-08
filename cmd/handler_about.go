@@ -24,7 +24,8 @@ func aboutHandler(baseUrl string, logger log.Logger) func(context.Context, gemin
 			Name: "My main website is eberl.se",
 		})
 		text = append(text, gemini.LineText(""))
-		text = append(text, gemini.LineHeading2("Navigation\n"))
+
+		text = append(text, gemini.LineHeading1("Navigation\n"))
 		text = append(text, gemini.LineLink{
 			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
 			Name: "Home",
