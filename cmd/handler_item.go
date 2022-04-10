@@ -83,7 +83,7 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 
 				text = append(text, gemini.LineLink{
 					URL:  fmt.Sprintf("gemini://%s/user/%s", baseUrl, firstLevelComment.By),
-					Name: fmt.Sprintf("By: %s", item.By),
+					Name: fmt.Sprintf("By: %s", firstLevelComment.By),
 				})
 
 				if len(firstLevelComment.Kids) > 0 {
