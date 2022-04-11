@@ -8,12 +8,12 @@ import (
 	"github.com/go-kit/kit/log"
 )
 
-func aboutHandler(baseUrl string, logger log.Logger) func(context.Context, gemini.ResponseWriter, *gemini.Request) {
+func HandlerIndex(baseUrl string, logger log.Logger) func(context.Context, gemini.ResponseWriter, *gemini.Request) {
 	return func(ctx context.Context, w gemini.ResponseWriter, r *gemini.Request) {
 		var text gemini.Text
 
-		text = append(text, gemini.LineHeading1("About\n"))
-		text = append(text, gemini.LineText("This is a Gemini mirror of Hacker News. Very much work-in-progress.\n"))
+		text = append(text, gemini.LineHeading1("Main\n"))
+		text = append(text, gemini.LineText("This is my Gemini site. Very much work-in-progress.\n"))
 		text = append(text, gemini.LineLink{
 			URL:  "https://github.com/geberl/go-gemini-hn",
 			Name: "Source code is available at GitHub",
@@ -27,8 +27,8 @@ func aboutHandler(baseUrl string, logger log.Logger) func(context.Context, gemin
 
 		text = append(text, gemini.LineHeading1("Navigation\n"))
 		text = append(text, gemini.LineLink{
-			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
-			Name: "Home",
+			URL:  fmt.Sprintf("gemini://%s/hn/", baseUrl),
+			Name: "Hacker News Mirror",
 		})
 
 		w.Write([]byte(text.String()))

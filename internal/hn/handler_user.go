@@ -1,4 +1,4 @@
-package main
+package hn
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 	"github.com/lukakerr/hkn"
 )
 
-func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini.ResponseWriter, *gemini.Request) {
+func HandlerUser(baseUrl string, logger log.Logger) func(context.Context, gemini.ResponseWriter, *gemini.Request) {
 	return func(ctx context.Context, w gemini.ResponseWriter, r *gemini.Request) {
-		username := strings.TrimPrefix(r.URL.Path, "/user/")
+		username := strings.TrimPrefix(r.URL.Path, "/hn/user/")
 
 		client := hkn.NewClient()
 		user, err := client.GetUser(username)
@@ -64,7 +64,7 @@ func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		for _, submittedItem := range submittedItems {
 			if submittedItem.Type == "story" {
 				text = append(text, gemini.LineLink{
-					URL:  fmt.Sprintf("gemini://%s/item/%d", baseUrl, submittedItem.ID),
+					URL:  fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, submittedItem.ID),
 					Name: submittedItem.Title,
 				})
 				text = append(text, gemini.LineText(fmt.Sprintf(
@@ -80,7 +80,7 @@ func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		for _, submittedItem := range submittedItems {
 			if submittedItem.Type == "comment" {
 				text = append(text, gemini.LineLink{
-					URL:  fmt.Sprintf("gemini://%s/item/%d", baseUrl, submittedItem.ID),
+					URL:  fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, submittedItem.ID),
 					Name: submittedItem.Title,
 				})
 				text = append(text, gemini.LineText(fmt.Sprintf(
@@ -94,12 +94,12 @@ func userHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 
 		text = append(text, gemini.LineHeading1("Navigation\n"))
 		text = append(text, gemini.LineLink{
-			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
-			Name: "Home",
+			URL:  fmt.Sprintf("gemini://%s/hn/", baseUrl),
+			Name: "Hacker News Mirror",
 		})
 		text = append(text, gemini.LineLink{
-			URL:  fmt.Sprintf("gemini://%s/about", baseUrl),
-			Name: "About",
+			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
+			Name: "Home",
 		})
 
 		w.Write([]byte(text.String()))

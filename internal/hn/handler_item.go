@@ -1,4 +1,4 @@
-package main
+package hn
 
 import (
 	"context"
@@ -12,9 +12,9 @@ import (
 	"github.com/lukakerr/hkn"
 )
 
-func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini.ResponseWriter, *gemini.Request) {
+func HandlerItem(baseUrl string, logger log.Logger) func(context.Context, gemini.ResponseWriter, *gemini.Request) {
 	return func(ctx context.Context, w gemini.ResponseWriter, r *gemini.Request) {
-		id := strings.TrimPrefix(r.URL.Path, "/item/")
+		id := strings.TrimPrefix(r.URL.Path, "/hn/item/")
 		cleanId, err := strconv.Atoi(id)
 		if err != nil {
 			level.Error(logger).Log("msg", "unable to convert item id to integer", "err", err)
@@ -56,7 +56,7 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 
 		text = append(text, gemini.LineHeading2("Metadata\n"))
 		text = append(text, gemini.LineLink{
-			URL:  fmt.Sprintf("gemini://%s/user/%s", baseUrl, item.By),
+			URL:  fmt.Sprintf("gemini://%s/hn/user/%s", baseUrl, item.By),
 			Name: fmt.Sprintf("By: %s", item.By),
 		})
 		text = append(text, gemini.LineText(fmt.Sprintf("Id: %d", item.ID)))
@@ -82,13 +82,13 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 				text = append(text, gemini.LineHeading3(fmt.Sprintf("%s\n", timestamp(int(firstLevelComment.Time)))))
 
 				text = append(text, gemini.LineLink{
-					URL:  fmt.Sprintf("gemini://%s/user/%s", baseUrl, firstLevelComment.By),
+					URL:  fmt.Sprintf("gemini://%s/hn/user/%s", baseUrl, firstLevelComment.By),
 					Name: fmt.Sprintf("By: %s", firstLevelComment.By),
 				})
 
 				if len(firstLevelComment.Kids) > 0 {
 					text = append(text, gemini.LineLink{
-						URL:  fmt.Sprintf("gemini://%s/item/%d", baseUrl, firstLevelComment.ID),
+						URL:  fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, firstLevelComment.ID),
 						Name: fmt.Sprintf("Responses: %d", len(firstLevelComment.Kids)),
 					})
 				}
@@ -104,17 +104,17 @@ func itemHandler(baseUrl string, logger log.Logger) func(context.Context, gemini
 		text = append(text, gemini.LineHeading1("Navigation\n"))
 		if item.Parent > 0 {
 			text = append(text, gemini.LineLink{
-				URL:  fmt.Sprintf("gemini://%s/item/%d", baseUrl, item.Parent),
+				URL:  fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, item.Parent),
 				Name: "Parent",
 			})
 		}
 		text = append(text, gemini.LineLink{
-			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
-			Name: "Home",
+			URL:  fmt.Sprintf("gemini://%s/hn/", baseUrl),
+			Name: "Hacker News Mirror",
 		})
 		text = append(text, gemini.LineLink{
-			URL:  fmt.Sprintf("gemini://%s/about", baseUrl),
-			Name: "About",
+			URL:  fmt.Sprintf("gemini://%s/", baseUrl),
+			Name: "Home",
 		})
 
 		w.Write([]byte(text.String()))

@@ -11,6 +11,8 @@ import (
 	"git.sr.ht/~adnano/go-gemini/certificate"
 	"github.com/go-kit/log/level"
 	"github.com/oklog/run"
+
+	"go-gemini-hn/internal/hn"
 )
 
 func main() {
@@ -40,10 +42,12 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	{
 		mux := &gemini.Mux{}
-		mux.HandleFunc("/", frontHandler(baseUrl, logger))
-		mux.HandleFunc("/about", aboutHandler(baseUrl, logger))
-		mux.HandleFunc("/item/", itemHandler(baseUrl, logger))
-		mux.HandleFunc("/user/", userHandler(baseUrl, logger))
+
+		mux.HandleFunc("/", HandlerIndex(baseUrl, logger))
+
+		mux.HandleFunc("/hn/", hn.HandlerIndex(baseUrl, logger))
+		mux.HandleFunc("/hn/item/", hn.HandlerItem(baseUrl, logger))
+		mux.HandleFunc("/hn/user/", hn.HandlerUser(baseUrl, logger))
 
 		server := &gemini.Server{
 			Handler:        loggingMiddleware(mux, logger),
