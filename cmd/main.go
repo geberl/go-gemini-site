@@ -16,11 +16,11 @@ import (
 )
 
 func main() {
-	baseUrl := os.Getenv("HN_BASE_URL")
+	baseUrl := os.Getenv("GEMINI_SITE_BASE_URL")
 	if baseUrl == "" {
 		baseUrl = "localhost"
 	}
-	logLevel := os.Getenv("HN_LOG_LEVEL")
+	logLevel := os.Getenv("GEMINI_SITE_LOG_LEVEL")
 	if logLevel == "" {
 		logLevel = "info"
 	}

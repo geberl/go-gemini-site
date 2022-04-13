@@ -19,8 +19,8 @@ docker build --tag geberl/go-gemini-site:latest .
 
 docker run --detach \
            --env "TZ=Europe/Berlin" \
-           --env "HN_BASE_URL=localhost" \
-           --env "HN_LOG_LEVEL=debug" \
+           --env "GEMINI_SITE_BASE_URL=localhost" \
+           --env "GEMINI_SITE_LOG_LEVEL=debug" \
            --publish 1965:1965 \
            --name go-gemini-site \
            --restart unless-stopped \
@@ -37,8 +37,8 @@ docker pull ghcr.io/geberl/go-gemini-site:latest
 
 docker run --detach \
            --env "TZ=Europe/Berlin" \
-           --env "HN_BASE_URL=eberl.se" \
-           --env "HN_LOG_LEVEL=error" \
+           --env "GEMINI_SITE_BASE_URL=eberl.se" \
+           --env "GEMINI_SITE_LOG_LEVEL=error" \
            --mount type=volume,source=go-gemini-site-certs,destination=/app/certs \
            --publish 1965:1965 \
            --name go-gemini-site \
