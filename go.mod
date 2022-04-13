@@ -1,4 +1,4 @@
-module go-gemini-hn
+module go-gemini-site
 
 go 1.17
 

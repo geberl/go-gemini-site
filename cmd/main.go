@@ -12,7 +12,7 @@ import (
 	"github.com/go-kit/log/level"
 	"github.com/oklog/run"
 
-	"go-gemini-hn/internal/hn"
+	"go-gemini-site/internal/hn"
 )
 
 func main() {

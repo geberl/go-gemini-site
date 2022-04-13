@@ -15,7 +15,7 @@ func HandlerIndex(baseUrl string, logger log.Logger) func(context.Context, gemin
 		text = append(text, gemini.LineHeading1("Main\n"))
 		text = append(text, gemini.LineText("This is my Gemini site. Very much work-in-progress.\n"))
 		text = append(text, gemini.LineLink{
-			URL:  "https://github.com/geberl/go-gemini-hn",
+			URL:  "https://github.com/geberl/go-gemini-site",
 			Name: "Source code is available at GitHub",
 		})
 		text = append(text, gemini.LineText(""))
