@@ -1,0 +1,46 @@
+# Sample Entry
+
+This is just a sample entry.
+
+## Sub-heading
+
+Text-content.
+
+List:
+
+* Mercury
+* Gemini
+* Apollo
+
+### Sub-subheading
+
+Quote:
+
+> I contend that text-based websites should not exceed in size the major works of Russian literature.
+
+## Code
+
+Python code snippet:
+
+```python
+print("Hello World!")
+# This is a comment.
+
+x = 5
+y = 4
+z = "John"
+print(x + y)
+print(z)
+```
+
+Go code snippet:
+
+```go
+func main() {
+    fmt.Println("Hello World!")
+    // This is a comment
+
+    var b, c int = 1, 2
+    fmt.Println(b, c)
+}
+```

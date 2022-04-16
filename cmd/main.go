@@ -12,6 +12,7 @@ import (
 	"github.com/go-kit/log/level"
 	"github.com/oklog/run"
 
+	"go-gemini-site/internal/gemlog"
 	"go-gemini-site/internal/hn"
 )
 
@@ -44,6 +45,8 @@ func main() {
 		mux := &gemini.Mux{}
 
 		mux.HandleFunc("/", HandlerIndex(baseUrl, logger))
+
+		mux.Handle("/gemlog/", gemlog.FileServer(baseUrl, logger, "gemlog", os.DirFS("gemlog")))
 
 		mux.HandleFunc("/hn/", hn.HandlerIndex(baseUrl, logger))
 		mux.HandleFunc("/hn/item/", hn.HandlerItem(baseUrl, logger))

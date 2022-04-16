@@ -27,6 +27,10 @@ func HandlerIndex(baseUrl string, logger log.Logger) func(context.Context, gemin
 
 		text = append(text, gemini.LineHeading1("Navigation\n"))
 		text = append(text, gemini.LineLink{
+			URL:  fmt.Sprintf("gemini://%s/gemlog/", baseUrl),
+			Name: "Gemlog",
+		})
+		text = append(text, gemini.LineLink{
 			URL:  fmt.Sprintf("gemini://%s/hn/", baseUrl),
 			Name: "Hacker News Mirror",
 		})
