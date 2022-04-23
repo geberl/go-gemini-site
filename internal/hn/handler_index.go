@@ -38,6 +38,7 @@ func HandlerIndex(baseUrl string, logger log.Logger) func(context.Context, gemin
 				URL:  linkURL,
 				Name: linkName,
 			})
+			text = append(text, gemini.LineText(""))
 		}
 
 		text = append(text, gemini.LineHeading1("Navigation\n"))

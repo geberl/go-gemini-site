@@ -70,6 +70,7 @@ func HandlerUser(baseUrl string, logger log.Logger) func(context.Context, gemini
 						URL:  linkURL,
 						Name: linkName,
 					})
+					text = append(text, gemini.LineText(""))
 				}
 			}
 		}
@@ -83,6 +84,7 @@ func HandlerUser(baseUrl string, logger log.Logger) func(context.Context, gemini
 					URL:  linkURL,
 					Name: linkName,
 				})
+				text = append(text, gemini.LineText(""))
 			}
 		}
 
