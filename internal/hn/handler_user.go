@@ -63,32 +63,26 @@ func HandlerUser(baseUrl string, logger log.Logger) func(context.Context, gemini
 		text = append(text, gemini.LineHeading3("Stories\n"))
 		for _, submittedItem := range submittedItems {
 			if submittedItem.Type == "story" {
-				text = append(text, gemini.LineLink{
-					URL:  fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, submittedItem.ID),
-					Name: submittedItem.Title,
-				})
-				text = append(text, gemini.LineText(fmt.Sprintf(
-					"%d points | %d comments | %s\n",
-					submittedItem.Score,
-					len(submittedItem.Kids),
-					timestamp(int(submittedItem.Time)),
-				)))
+				if len(submittedItem.Title) > 0 {
+					linkURL := fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, submittedItem.ID)
+					linkName := fmt.Sprintf("%s - %s [%d points | %d comments]", datestamp(int(submittedItem.Time)), submittedItem.Title, submittedItem.Score, len(submittedItem.Kids))
+					text = append(text, gemini.LineLink{
+						URL:  linkURL,
+						Name: linkName,
+					})
+				}
 			}
 		}
 
 		text = append(text, gemini.LineHeading3("Comments\n"))
 		for _, submittedItem := range submittedItems {
 			if submittedItem.Type == "comment" {
+				linkURL := fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, submittedItem.ID)
+				linkName := fmt.Sprintf("%s - [%d points | %d comments]", datestamp(int(submittedItem.Time)), submittedItem.Score, len(submittedItem.Kids))
 				text = append(text, gemini.LineLink{
-					URL:  fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, submittedItem.ID),
-					Name: submittedItem.Title,
+					URL:  linkURL,
+					Name: linkName,
 				})
-				text = append(text, gemini.LineText(fmt.Sprintf(
-					"%d points | %d comments | %s\n",
-					submittedItem.Score,
-					len(submittedItem.Kids),
-					timestamp(int(submittedItem.Time)),
-				)))
 			}
 		}
 

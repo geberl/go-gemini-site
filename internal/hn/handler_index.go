@@ -32,11 +32,12 @@ func HandlerIndex(baseUrl string, logger log.Logger) func(context.Context, gemin
 		text = append(text, gemini.LineHeading2("Top 25 Stories\n"))
 
 		for _, story := range stories {
+			linkURL := fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, story.ID)
+			linkName := fmt.Sprintf("%s [%d points | %d comments]", story.Title, story.Score, len(story.Kids))
 			text = append(text, gemini.LineLink{
-				URL:  fmt.Sprintf("gemini://%s/hn/item/%d", baseUrl, story.ID),
-				Name: story.Title,
+				URL:  linkURL,
+				Name: linkName,
 			})
-			text = append(text, gemini.LineText(fmt.Sprintf("%d points | %d comments\n", story.Score, len(story.Kids))))
 		}
 
 		text = append(text, gemini.LineHeading1("Navigation\n"))

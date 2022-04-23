@@ -33,6 +33,10 @@ func plaintext(html string, logger log.Logger) []string {
 	return lines
 }
 
+func datestamp(unix int) string {
+	return time.Unix(int64(unix), 0).Format("2006-01-02")
+}
+
 func timestamp(unix int) string {
 	return time.Unix(int64(unix), 0).Format("2006-01-02 15:04:05")
 }
