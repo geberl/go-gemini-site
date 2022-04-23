@@ -68,7 +68,7 @@ func HandlerUser(baseUrl string, logger log.Logger) func(context.Context, gemini
 					Name: submittedItem.Title,
 				})
 				text = append(text, gemini.LineText(fmt.Sprintf(
-					"%d score | %d comments | %s\n",
+					"%d points | %d comments | %s\n",
 					submittedItem.Score,
 					len(submittedItem.Kids),
 					timestamp(int(submittedItem.Time)),
@@ -84,7 +84,7 @@ func HandlerUser(baseUrl string, logger log.Logger) func(context.Context, gemini
 					Name: submittedItem.Title,
 				})
 				text = append(text, gemini.LineText(fmt.Sprintf(
-					"%d score | %d comments | %s\n",
+					"%d points | %d comments | %s\n",
 					submittedItem.Score,
 					len(submittedItem.Kids),
 					timestamp(int(submittedItem.Time)),

@@ -61,7 +61,7 @@ func HandlerItem(baseUrl string, logger log.Logger) func(context.Context, gemini
 		})
 		text = append(text, gemini.LineText(fmt.Sprintf("Id: %d", item.ID)))
 		text = append(text, gemini.LineText(fmt.Sprintf("Comments: %d", item.Descendants)))
-		text = append(text, gemini.LineText(fmt.Sprintf("Score: %d", item.Score)))
+		text = append(text, gemini.LineText(fmt.Sprintf("Points: %d", item.Score)))
 		text = append(text, gemini.LineText(fmt.Sprintf("Type: %s", strings.Title(item.Type))))
 		text = append(text, gemini.LineText(fmt.Sprintf("Created: %s", timestamp(int(item.Time)))))
 		text = append(text, gemini.LineText(""))
