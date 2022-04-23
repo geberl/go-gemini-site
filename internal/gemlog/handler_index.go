@@ -108,6 +108,7 @@ func dirList(w gemini.ResponseWriter, f fs.File, baseUrl string, logger log.Logg
 
 	var text gemini.Text
 	text = append(text, gemini.LineHeading1("Günther Eberl's Gemlog\n"))
+	text = append(text, gemini.LineHeading2("My Posts\n"))
 
 	for _, entry := range entries {
 		if entry.IsDir() {
@@ -133,6 +134,11 @@ func dirList(w gemini.ResponseWriter, f fs.File, baseUrl string, logger log.Logg
 			URL:  (&url.URL{Path: filename}).EscapedPath(),
 		})
 	}
+	text = append(text, gemini.LineText(""))
+
+	text = append(text, gemini.LineHeading2("Other Gemlogs I Enjoy\n"))
+	text = append(text, gemini.LineText("tba"))
+	text = append(text, gemini.LineText(""))
 
 	text = append(text, gemini.LineHeading1("Navigation\n"))
 	text = append(text, gemini.LineLink{
