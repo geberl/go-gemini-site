@@ -4,12 +4,12 @@ WORKDIR /app
 COPY go.mod go.sum /app/
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 go build -o hn.bin ./cmd
+RUN CGO_ENABLED=0 go build -o server.bin ./cmd
 
 FROM alpine:3.15
 RUN apk add --no-cache ca-certificates
 WORKDIR /app
-COPY --from=builder /app/hn.bin hn
+COPY --from=builder /app/server.bin server
 RUN mkdir /app/certs
 EXPOSE 1965
-ENTRYPOINT ["/app/hn"]
+ENTRYPOINT ["/app/server"]
