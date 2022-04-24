@@ -1,6 +1,6 @@
 module go-gemini-site
 
-go 1.17
+go 1.18
 
 require (
 	git.sr.ht/~adnano/go-gemini v0.2.2
