@@ -42,7 +42,15 @@ func loggingMiddleware(h gemini.Handler, logger log.Logger) gemini.Handler {
 		startTime := time.Now()
 		lw := &logResponseWriter{CorrelationId: uuid.New().String(), rw: w}
 
-		level.Info(logger).Log("msg", "request received", "correlation_id", lw.CorrelationId, "url", r.URL)
+		level.Info(logger).Log(
+			"msg", "request received",
+			"correlation_id", lw.CorrelationId,
+			"url", r.URL,
+			"urlHost", r.URL.Host,
+			"connLocal", r.Conn().LocalAddr().String(), // eg. 172.17.0.2:1965 (the Docker container's IP address)
+			"connRemote", r.Conn().RemoteAddr().String(), // eg. 10.0.0.4:36516 (the load balancer, port differs on each request)
+		)
+
 		h.ServeGemini(ctx, lw, r)
 
 		duration := time.Now().Sub(startTime)
